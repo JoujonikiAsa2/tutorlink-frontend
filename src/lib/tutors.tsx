@@ -7,10 +7,19 @@ export const tutors = [
     subjects: ["Math", "Chemistry"],
     rating: 4.5,
     hourlyRate: 35,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. Alex Johnson",
+      email: "alex.johnson@example.com",
+      phone: "+1 234-567-8901",
+      age: 45,
+      gender: "Male",
+      experience: "10+ years",
+      qualifications: "PhD in Mathematics",
+      teachingStyle: "Interactive and concept-based learning",
+      languagesSpoken: ["English", "Spanish"]
+    }
   },
   {
     id: 2,
@@ -18,10 +27,19 @@ export const tutors = [
     subjects: ["Physics", "Biology"],
     rating: 4.8,
     hourlyRate: 40,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. Sarah Smith",
+      email: "sarah.smith@example.com",
+      phone: "+1 234-567-8902",
+      age: 40,
+      gender: "Female",
+      experience: "12 years",
+      qualifications: "PhD in Physics",
+      teachingStyle: "Hands-on experiments and real-world applications",
+      languagesSpoken: ["English", "French"]
+    }
   },
   {
     id: 3,
@@ -29,10 +47,19 @@ export const tutors = [
     subjects: ["Math", "English"],
     rating: 4.2,
     hourlyRate: 45,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. Michael Williams",
+      email: "michael.williams@example.com",
+      phone: "+1 234-567-8903",
+      age: 50,
+      gender: "Male",
+      experience: "15 years",
+      qualifications: "PhD in Education",
+      teachingStyle: "Focuses on creative problem-solving",
+      languagesSpoken: ["English"]
+    }
   },
   {
     id: 4,
@@ -40,10 +67,19 @@ export const tutors = [
     subjects: ["Physics", "History"],
     rating: 4.7,
     hourlyRate: 50,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. Emma Brown",
+      email: "emma.brown@example.com",
+      phone: "+1 234-567-8904",
+      age: 38,
+      gender: "Female",
+      experience: "11 years",
+      qualifications: "PhD in History",
+      teachingStyle: "Storytelling and case studies",
+      languagesSpoken: ["English", "German"]
+    }
   },
   {
     id: 5,
@@ -51,10 +87,19 @@ export const tutors = [
     subjects: ["Math", "Computer Science"],
     rating: 4.3,
     hourlyRate: 55,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. David Jones",
+      email: "david.jones@example.com",
+      phone: "+1 234-567-8905",
+      age: 42,
+      gender: "Male",
+      experience: "14 years",
+      qualifications: "PhD in Computer Science",
+      teachingStyle: "Project-based learning and hands-on coding",
+      languagesSpoken: ["English", "Chinese"]
+    }
   },
   {
     id: 6,
@@ -62,45 +107,23 @@ export const tutors = [
     subjects: ["Physics", "Spanish"],
     rating: 4.9,
     hourlyRate: 60,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
-  },
-  {
-    id: 7,
-    name: "Dr. John Davis",
-    subjects: ["Math", "French"],
-    rating: 4.6,
-    hourlyRate: 65,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
-  },
-  {
-    id: 8,
-    name: "Dr. Lisa Garcia",
-    subjects: ["Physics", "Economics"],
-    rating: 4.4,
-    hourlyRate: 70,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
-  },
-  {
-    id: 9,
-    name: "Dr. Robert Wilson",
-    subjects: ["Math", "Chemistry"],
-    rating: 4.7,
-    hourlyRate: 75,
-    image:
-      "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
-    description:
-      "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
-  },
+    image: "https://img.freepik.com/free-photo/smart-looking-teacher_53876-23045.jpg",
+    description: "PhD with 10+ years of teaching experience. Specializes in helping students master complex concepts.",
+    bio: {
+      name: "Dr. Jessica Miller",
+      email: "jessica.miller@example.com",
+      phone: "+1 234-567-8906",
+      age: 39,
+      gender: "Female",
+      experience: "13 years",
+      qualifications: "PhD in Physics",
+      teachingStyle: "Interactive and inquiry-based",
+      languagesSpoken: ["English", "Spanish"]
+    }
+  }
 ];
+
+
 
 export const subjects = [
   "Math",
