@@ -21,7 +21,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md p-4">
+    <Card className="w-full max-w-md p-4 ">
       <CardHeader className="space-y-1 p-0">
         <CardTitle className="text-xl font-bold text-primary uppercase">
           Login

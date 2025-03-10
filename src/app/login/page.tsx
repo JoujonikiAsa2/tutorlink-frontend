@@ -10,14 +10,16 @@ const LoginPage = () => {
   return (
     <div
     style={{
-      backgroundImage: "url('/bg-01.jpg')",
+      backgroundImage: "url('/bg-01.png')",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
     }}
-    className="flex flex-col min-h-[100vh] items-center justify-center"
+    className=""
   >
+    <div className="bg-gradient-to-l from-primary/40 to-secondary/50 backdrop-blur w-full flex flex-col min-h-[100vh] items-center justify-center ">
       <LoginForm />
+    </div>
     </div>
   );
 };
