@@ -16,7 +16,7 @@ const HeroSection = () => {
       }}
       >
       {/* hero section */}
-      <section className="w-full h-[calc(100vh-4rem)] py-12 md:py-24 lg:py-32 bg-gradient-to-l from-primary/40 to-secondary/50 backdrop-blur">
+      <section className="w-full h-full min-h-[calc(100vh-4rem)] py-12 md:py-24 lg:py-32 bg-gradient-to-l from-primary/40 to-secondary/50 backdrop-blur flex items-center">
         <div className="container px-4 md:px-0 mx-auto">
           <div className="flex flex-col md:flex-row gap-6 lg:gap-12 items-center">
             <div className="flex flex-col justify-center space-y-4">
