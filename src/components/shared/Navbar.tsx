@@ -19,7 +19,7 @@ const Navbar = () => {
     { href: "/tutors", label: "Browse Tutors" },
     { href: "/about", label: "About Us" },
     { href: "/faq", label: "FAQ" },
-    { href: "/blog", label: "Blog" },
+    { href: "/blogs", label: "Blog" },
   ];
 
   return (

@@ -212,7 +212,7 @@ const TutorsPage = () => {
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {tutors.map((tutor) => (
-                  <Card key={tutor.id} className="overflow-hidden p-0">
+                  <Card key={tutor.id} className="overflow-hidden p-0 bg-secondary/20">
                     <div className="w-full h-40 relative">
                       <Image
                         src={tutor.image || "/placeholder.svg"}

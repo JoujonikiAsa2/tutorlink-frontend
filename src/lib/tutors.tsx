@@ -322,5 +322,79 @@ export const faqCategories = [
       },
     ],
   },
-]
+];
 
+export const blogPosts = [
+  {
+    id: 1,
+    title: "New Features Coming to Our E-Learning Platform",
+    topic: "Platform Updates",
+    date: "2025-03-08",
+    readTime: "3 min",
+    author: "Admin Team",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "Exciting new features are launching soon—here’s what you need to know!",
+  },
+  {
+    id: 2,
+    title: "Top Study Techniques for Better Learning",
+    topic: "Educational Tips",
+    date: "2025-03-10",
+    readTime: "5 min",
+    author: "Dr. Emily Carter",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "Discover effective study techniques to improve retention and ace your exams.",
+  },
+
+  {
+    id: 3,
+    title: "How AI is Transforming Online Tutoring",
+    topic: "Industry News",
+    date: "2025-03-05",
+    readTime: "6 min",
+    author: "Dr. Alan Reed",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "A look into how artificial intelligence is shaping the future of online education.",
+  },
+  {
+    id: 4,
+    title: "Best Exam Preparation Strategies for Students",
+    topic: "Educational Tips",
+    date: "2025-03-01",
+    readTime: "7 min",
+    author: "Prof. Linda Thompson",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "Learn the best strategies to prepare for exams and reduce stress.",
+  },
+  {
+    id: 5,
+    title: "Understanding the Importance of Personalized Learning",
+    topic: "Industry News",
+    date: "2025-02-27",
+    readTime: "4 min",
+    author: "Dr. Sophia Green",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "Personalized learning is changing the way students succeed—here’s why it matters.",
+  },
+  {
+    id: 6,
+    title: "How to Stay Motivated While Studying Online",
+    topic: "Educational Tips",
+    date: "2025-02-20",
+    readTime: "5 min",
+    image:
+      "https://img.freepik.com/free-photo/teamwork-making-online-blog_53876-94868.jpg?uid=R112553171&ga=GA1.1.1697974571.1724389332&semt=ais_hybrid",
+    description:
+      "Personalized learning is changing the way students succeed—here’s why it matters.",
+  },
+];

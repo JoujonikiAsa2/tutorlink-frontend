@@ -23,7 +23,7 @@ const OurTeam = () => {
           </div>
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 pt-8">
             {teamMembers.map((member, index) => (
-              <Card key={index} className="overflow-hidden p-0">
+              <Card key={index} className="overflow-hidden p-0 bg-secondary/20">
                 <div className="w-full h-40 relative">
                   <Image
                     src={member.image || "/placeholder.svg"}

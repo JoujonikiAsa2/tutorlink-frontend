@@ -1,6 +1,6 @@
-import Features from "@/components/modules/auth/home/Features";
-import HeroSection from "@/components/modules/auth/home/HeroSection";
-import Testimonial from "@/components/modules/auth/home/Testimonial";
+import Features from "@/components/modules/home/Features";
+import HeroSection from "@/components/modules/home/HeroSection";
+import Testimonial from "@/components/modules/home/Testimonial";
 
 export default function Home() {
   return (

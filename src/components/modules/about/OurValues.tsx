@@ -18,7 +18,7 @@ const OurValues = () => {
             </p>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 py-12">
               {ourValues.map((value, index) => (
-                <Card key={index}>
+                <Card key={index} className="bg-background/20">
                   <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
                     <div className="p-2 rounded-full bg-primary/10">
                       {value.icon}
