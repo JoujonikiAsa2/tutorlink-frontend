@@ -234,7 +234,7 @@ const TutorsPage = () => {
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {tutor.subjects.map((subject) => (
-                            <Badge key={subject} variant="outline">
+                            <Badge key={subject} variant="outline" className="border-primary">
                               {subject}
                             </Badge>
                           ))}

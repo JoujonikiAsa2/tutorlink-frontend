@@ -124,6 +124,36 @@ export const tutors = [
 ];
 
 
+export const classesArray = [
+  { id: "class-1", label: "Class 1" },
+  { id: "class-2", label: "Class 2" },
+  { id: "class-3", label: "Class 3" },
+  { id: "class-4", label: "Class 4" },
+  { id: "class-5", label: "Class 5" },
+  { id: "class-6", label: "Class 6" },
+  { id: "class-7", label: "Class 7" },
+  { id: "class-8", label: "Class 8" },
+  { id: "class-9", label: "Class 9" },
+  { id: "class-10", label: "Class 10" },
+  { id: "class-11", label: "Class 11" },
+  { id: "class-12", label: "Class 12" },
+];
+
+export const subjectsArray = [
+  { id: "bengali", label: "Bengali" },
+  { id: "math", label: "Mathematics" },
+  { id: "science", label: "Science" },
+  { id: "english", label: "English" },
+  { id: "history", label: "History" },
+  { id: "geography", label: "Geography" },
+  { id: "physics", label: "Physics" },
+  { id: "chemistry", label: "Chemistry" },
+  { id: "biology", label: "Biology" },
+  { id: "computer", label: "Computer Science" },
+  { id: "economics", label: "Economics" },
+];
+
+
 
 export const subjects = [
   "Math",
@@ -346,6 +376,7 @@ export const faqCategories = [
     ],
   },
 ];
+
 
 export const blogPosts = [
   {

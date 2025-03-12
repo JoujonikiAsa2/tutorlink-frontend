@@ -2,7 +2,7 @@ import Features from "@/components/modules/home/Features";
 import HeroSection from "@/components/modules/home/HeroSection";
 import Testimonial from "@/components/modules/home/Testimonial";
 
-export default function Home() {
+const HomePage = async() => {
   return (
     <div>
         <HeroSection/>
@@ -11,3 +11,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default HomePage

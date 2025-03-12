@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import {signIn} from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
 
 const LoginForm = () => {
   const form = useForm();
@@ -59,6 +61,14 @@ const LoginForm = () => {
             Register as Student
           </Button>
         </form>
+        <div className="flex jutify-center items-center">
+        <Button variant="secondary" className="mt-5 w-full" onClick={()=> signIn("google", {
+          callbackUrl: `http://localhost:3000/`
+        })}>
+            <FaGoogle className="w-6 h-6 mr-2" />
+            Login with Google
+          </Button>
+        </div>
         <div className="text-center pt-6 text-gray-500">
           Already have an account?{" "}
           <Link href="/register">

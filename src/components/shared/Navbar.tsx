@@ -7,13 +7,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/photo/logo.png"
+import logo from "@/assets/photo/logo.png";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
-const Navbar = () => {
+type UserProps = {
+  user?: {
+    name?: string | null | undefined;
+    email?: string | null | undefined;
+    image?: string | null | undefined;
+  };
+};
+
+const Navbar = ({ session }: { session: UserProps | null }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-
   const routes = [
     { href: "/", label: "Home" },
     { href: "/tutors", label: "Browse Tutors" },
@@ -22,13 +30,16 @@ const Navbar = () => {
     { href: "/blogs", label: "Blog" },
   ];
 
+  console.log(session);
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur px-4 md:px-0">
       <div className="container mx-auto flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-          <Image src ={logo} alt="logo" width={40} height={40}/>
-            <span className="text-2xl font-bold text-secondary"><span className="text-primary">Tutor</span>Link</span>
+            <Image src={logo} alt="logo" width={30} height={30} />
+            <span className="text-xl font-bold text-secondary">
+              <span className="text-primary">Tutor</span>Link
+            </span>
           </Link>
         </div>
 
@@ -59,12 +70,20 @@ const Navbar = () => {
               className="w-[200px] pl-8"
             />
           </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/signup">Sign up</Link>
-          </Button>
+          {session?.user ? (
+            <Button variant="outline" onClick={() => signOut()}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button variant="outline">
+                <Link href="/login">Log in</Link>
+              </Button>
+              <Button>
+                <Link href="/register">Sign up</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* mobile mode design */}
@@ -86,7 +105,7 @@ const Navbar = () => {
 
       {/* mobile menu desing*/}
       {isMenuOpen && (
-        <div className="md:hidden border-t p-4">
+        <div className="lg:hidden border-t p-4">
           <div className="container py-4 space-y-4">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -113,14 +132,18 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-            <div className="flex flex-col gap-2">
-              <Button variant="outline" asChild>
-                <Link href="/login">Log in</Link>
-              </Button>
-              <Button asChild>
-                <Link href="/signup">Sign up</Link>
-              </Button>
-            </div>
+            {session?.user ? (
+              <Button variant="outline" onClick={() => signOut()}>Logout</Button>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <Button variant="outline">
+                  <Link href="/login">Log in</Link>
+                </Button>
+                <Button >
+                  <Link href="/register">Sign up</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
