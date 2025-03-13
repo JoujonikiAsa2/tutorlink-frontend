@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -5,21 +6,50 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import {signIn} from "next-auth/react";
-import { FaGoogle } from "react-icons/fa";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "./loginFormValidation";
+import { loginUser } from "@/service/AuthService";
+import { toast, Toaster } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 const LoginForm = () => {
-  const form = useForm();
+  const { setIsLoading} =  useUser()
+  const searchParams = useSearchParams(); 
+  const redirect = searchParams.get("redirectPath");
+  const router = useRouter();
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const onSubmit:SubmitHandler<FieldValues> = (data) => {
+  const {
+    formState: {isSubmitting}
+  } = form
+
+  const onSubmit: SubmitHandler<FieldValues> = async(data) => {
     console.log(data);
+    try {
+      const res = await loginUser(data);
+      setIsLoading(true);
+      if (res?.success) {
+        toast.success(res?.message);
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
   };
 
   return (
@@ -36,11 +66,16 @@ const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <p className="text-sm font-medium">Email</p>
                 <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
+                  <Input
+                    type="email"
+                    {...field}
+                    value={field.value || ""}
+                    placeholder="Enter your email"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -49,26 +84,23 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <p className="text-sm font-medium">Password</p>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <Input
+                    type="password"
+                    {...field}
+                    value={field.value || ""}
+                    placeholder="Enter your password"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
           <Button type="submit" className="mt-5 w-full">
-            Register as Student
+            {isSubmitting ? "Loading .." : "Login"}
           </Button>
         </form>
-        <div className="flex jutify-center items-center">
-        <Button variant="secondary" className="mt-5 w-full" onClick={()=> signIn("google", {
-          callbackUrl: `http://localhost:3000/`
-        })}>
-            <FaGoogle className="w-6 h-6 mr-2" />
-            Login with Google
-          </Button>
-        </div>
         <div className="text-center pt-6 text-gray-500">
           Already have an account?{" "}
           <Link href="/register">
@@ -76,6 +108,7 @@ const LoginForm = () => {
           </Link>
         </div>
       </Form>
+      <Toaster richColors position="top-center"/>
     </Card>
   );
 };

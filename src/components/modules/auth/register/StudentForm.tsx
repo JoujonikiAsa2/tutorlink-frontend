@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -24,20 +23,42 @@ import {
 } from "@/components/ui/select";
 import { classesArray, subjectsArray } from "@/lib/tutors";
 import { Checkbox } from "@/components/ui/checkbox";
+import { registerUser } from "@/service/AuthService";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { studentSchema } from "./registerValidation";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 const StudentForm = () => {
-  const form = useForm();
+  const {setIsLoading} = useUser()
+  const router = useRouter()
+  const form = useForm({
+    resolver: zodResolver(studentSchema),
+  });
+
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   const [subjectChecked, setSubjectChecked] = useState<boolean>(false);
-  const [termsAndConditionChecked, setTermsAndConditionChecked] =
-    useState<boolean>(false);
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const sInfo = {
-      ...data,
-    };
-    console.log(sInfo);
+  useState<boolean>(false);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
+    try {
+      const res = await registerUser(data, "student");
+      setIsLoading(true);
+      if (res?.success) {
+        toast.success(res?.message);
+        router.push("/login");
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error: any) {
+      toast.error(error);
+    }
   };
 
-  console.log(subjectChecked, termsAndConditionChecked);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -45,21 +66,20 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Name<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <FormControl>
                     <Input
                       {...field}
                       value={field.value || ""}
                       placeholder="Name"
-                      required
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -67,22 +87,21 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sAge"
+              name="age"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Age<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <FormControl>
                     <Input
                       type="number"
                       {...field}
-                      value={field.value || ""}
+                      value={Number(field.value)}
                       placeholder="Age"
-                      required
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -92,16 +111,15 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sGender"
+              name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Gender<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    required
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -114,7 +132,7 @@ const StudentForm = () => {
                       <SelectItem value="other">other</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -122,21 +140,20 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sPhone"
+              name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Phone<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <FormControl>
                     <Input
                       {...field}
                       value={field.value || ""}
                       placeholder="Ex: 01749534..."
-                      required
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -146,16 +163,15 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sClass"
+              name="class"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Class<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    required
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -170,7 +186,7 @@ const StudentForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -178,16 +194,15 @@ const StudentForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="sLocation"
+              name="yourLocation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <p className="text-sm font-medium">
                     Your location<span className="text-red-500">*</span>
-                  </FormLabel>
+                  </p>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    required
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -206,7 +221,7 @@ const StudentForm = () => {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -215,12 +230,12 @@ const StudentForm = () => {
 
         <FormField
           control={form.control}
-          name="subjects"
+          name="subject"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
+              <p className="text-sm font-medium">
                 Subjects<span className="text-red-500">*</span>
-              </FormLabel>
+              </p>
               <div className="flex flex-wrap gap-2">
                 {subjectsArray.map((item) => (
                   <FormItem
@@ -241,95 +256,62 @@ const StudentForm = () => {
                         }}
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-normal">
-                      {item.label}
-                    </FormLabel>
+                    <p className="text-sm font-normal">{item.label}</p>
                   </FormItem>
                 ))}
               </div>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
 
         <FormField
           control={form.control}
-          name="sEmail"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
+              <p className="text-sm font-medium">
                 Email<span className="text-red-500">*</span>
-              </FormLabel>
+              </p>
               <FormControl>
                 <Input
                   type="email"
                   {...field}
                   value={field.value || ""}
                   placeholder="Ex: example@gmail.com"
-                  required
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="sPassword"
+          name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
+              <p className="text-sm font-medium">
                 Password<span className="text-red-500">*</span>
-              </FormLabel>
+              </p>
               <FormControl>
                 <Input
                   type="password"
                   {...field}
                   value={field.value || ""}
                   placeholder="Enter a secure password"
-                  required
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
         <div className="pt-4">
-          <FormField
-            control={form.control}
-            name="terms"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Terms<span className="text-red-500">*</span>
-                </FormLabel>
-                <div className="flex flex-wrap gap-2">
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value || false}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked);
-                          setTermsAndConditionChecked(!!checked);
-                        }}
-                        required
-                      />
-                    </FormControl>
-                    <FormLabel className="text-sm font-normal">
-                      Accept terms and conditions
-                    </FormLabel>
-                  </FormItem>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <Button
             type="submit"
             className="mt-5 w-full"
-            disabled={!subjectChecked || !termsAndConditionChecked}
+            disabled={!subjectChecked}
           >
-            Register as Student
+            {isSubmitting ? "Registering..." : "Register as Student"}
           </Button>
         </div>
       </form>

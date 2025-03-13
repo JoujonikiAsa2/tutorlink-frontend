@@ -2,26 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/photo/logo.png";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
+import { useUser } from "@/context/UserContext";
+import { logout } from "@/service/AuthService";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
-type UserProps = {
-  user?: {
-    name?: string | null | undefined;
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-  };
-};
-
-const Navbar = ({ session }: { session: UserProps | null }) => {
+const Navbar = () => {
+  const { user, setIsLoading } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const routes = [
     { href: "/", label: "Home" },
     { href: "/tutors", label: "Browse Tutors" },
@@ -30,7 +26,12 @@ const Navbar = ({ session }: { session: UserProps | null }) => {
     { href: "/blogs", label: "Blog" },
   ];
 
-  console.log(session);
+  const handleLogout = async() => {
+    await logout();
+    router.push("/");
+    router.refresh();
+    setIsLoading(false);
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur px-4 md:px-0">
       <div className="container mx-auto flex h-16 items-center justify-between">
@@ -70,9 +71,13 @@ const Navbar = ({ session }: { session: UserProps | null }) => {
               className="w-[200px] pl-8"
             />
           </div>
-          {session?.user ? (
-            <Button variant="outline" onClick={() => signOut()}>
-              Logout
+          {user?.email ? (
+            <Button
+              className="hover:bg-red-300 hover:"
+              variant="outline"
+              onClick={handleLogout}
+            >
+              <RiLogoutCircleLine />
             </Button>
           ) : (
             <>
@@ -132,14 +137,20 @@ const Navbar = ({ session }: { session: UserProps | null }) => {
                 </Link>
               ))}
             </nav>
-            {session?.user ? (
-              <Button variant="outline" onClick={() => signOut()}>Logout</Button>
+            {user?.email ? (
+              <Button
+                className="hover:bg-red-300 hover:"
+                variant="outline"
+                onClick={handleLogout}
+              >
+                <RiLogoutCircleLine />
+              </Button>
             ) : (
               <div className="flex flex-col gap-2">
                 <Button variant="outline">
                   <Link href="/login">Log in</Link>
                 </Button>
-                <Button >
+                <Button>
                   <Link href="/register">Sign up</Link>
                 </Button>
               </div>

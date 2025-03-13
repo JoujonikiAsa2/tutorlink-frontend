@@ -7,6 +7,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentForm from "./StudentForm";
 import TutorForm from "./TutorForm";
+import { Toaster } from "sonner";
 
 const RegisterForm = () => {
 
@@ -31,6 +32,7 @@ const RegisterForm = () => {
           <TutorForm/>
         </TabsContent>
       </Tabs>
+      <Toaster richColors position="top-center"/>
     </Card>
   );
 };
