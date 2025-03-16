@@ -10,12 +10,13 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/photo/logo.png";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
-import { logout } from "@/service/AuthService";
+import { logout } from "@/services/AuthService";
 import { RiLogoutCircleLine } from "react-icons/ri";
 
 const Navbar = () => {
   const { user, setIsLoading } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const pathname = usePathname();
   const router = useRouter();
   const routes = [
@@ -64,12 +65,13 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-4">
           <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              type="search"
+              type="text"
               placeholder="Search tutors..."
-              className="w-[200px] pl-8"
+              className="w-[200px]"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <Search className="hover:cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" onClick={() => router.push(`/tutors?searchTerm=${searchTerm}`)}/>
           </div>
           {user?.email ? (
             <Button

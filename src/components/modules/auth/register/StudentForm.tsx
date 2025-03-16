@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { classesArray, subjectsArray } from "@/lib/tutors";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/service/AuthService";
+import { registerUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { studentSchema } from "./registerValidation";
 import { toast } from "sonner";
@@ -62,6 +62,25 @@ const StudentForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="profileImage"
+              render={({ field }) => (
+                <FormItem>
+                  <p className="text-sm font-medium">
+                    Photo URL<span className="text-red-500">*</span>
+                  </p>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Ex: https://photo/...."
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
         <div className="w-full flex gap-2">
           <div className="w-1/2">
             <FormField
@@ -305,7 +324,6 @@ const StudentForm = () => {
             </FormItem>
           )}
         />
-        <div className="pt-4">
           <Button
             type="submit"
             className="mt-5 w-full"
@@ -313,7 +331,6 @@ const StudentForm = () => {
           >
             {isSubmitting ? "Registering..." : "Register as Student"}
           </Button>
-        </div>
       </form>
       <div className="text-center pt-6 text-gray-500">
         Already have an account?{" "}

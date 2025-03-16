@@ -1,20 +1,34 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import girl from "@/assets/photo/svg-01.svg";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const route = useRouter();
+
+  const applySearch = () => {
+    const searchParams = { searchTerm: searchTerm };
+    const query = new URLSearchParams(searchParams);
+    console.log(query);
+    route.push(`/tutors?${query}`);
+  };
+
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)]" style={{
+    <div
+      className="flex flex-col min-h-[calc(100vh-4rem)]"
+      style={{
         backgroundImage: "url('/bg-01.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
       }}
-      >
+    >
       {/* hero section */}
       <section className="w-full h-full min-h-[calc(100vh-4rem)] py-12 md:py-24 lg:py-32 bg-gradient-to-l from-primary/40 to-secondary/50 backdrop-blur flex items-center">
         <div className="container px-4 md:px-0 mx-auto">
@@ -32,13 +46,16 @@ const HeroSection = () => {
                 <div className="flex w-full max-w-sm items-center space-x-2">
                   <div className="relative flex-1">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Math, Science, English..."
-                      className="pl-8 rounded-r-none"
-                    />
+                    <div className="w-full h-9">
+                      <input
+                        type="search"
+                        placeholder="Math, Science, English..."
+                        className="w-full pl-8 rounded-r-none border border-primary h-full"
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <Button type="submit" className="rounded-l-none">
+                  <Button onClick={applySearch} className="rounded-l-none">
                     Search
                   </Button>
                 </div>

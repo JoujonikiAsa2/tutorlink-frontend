@@ -24,7 +24,7 @@ import { classesArray, subjectsArray } from "@/lib/tutors";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/service/AuthService";
+import { registerUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tutorSchema } from "./registerValidation";
 import { toast } from "sonner";
@@ -40,6 +40,7 @@ const TutorForm = () => {
   const [classChecked, setClassChecked] = useState<boolean>(false);
   const [subjectChecked, setSubjectChecked] = useState<boolean>(false);
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    data.preferedLocation = data.preferedLocation.split(",")
     try {
       const res = await registerUser(data, "tutor");
       setIsLoading(true);
@@ -56,6 +57,25 @@ const TutorForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="profileImage"
+          render={({ field }) => (
+            <FormItem>
+              <p className="text-sm font-medium">
+                Photo URL<span className="text-red-500">*</span>
+              </p>
+              <FormControl>
+                <Input
+                  {...field}
+                  value={field.value || ""}
+                  placeholder="Ex: https://photo/...."
+                />
+              </FormControl>
+              <FormMessage className="text-red-500" />
+            </FormItem>
+          )}
+        />
         <div className="w-full flex gap-2">
           <div className="w-1/2">
             <FormField
@@ -91,7 +111,7 @@ const TutorForm = () => {
                     <Input
                       type="number"
                       {...field}
-                      value={field.value || 0}
+                      value={field.value}
                       placeholder="Ex: 20"
                     />
                   </FormControl>
@@ -173,7 +193,26 @@ const TutorForm = () => {
             />
           </div>
         </div>
-
+        <FormField
+              control={form.control}
+              name="hourlyRate"
+              render={({ field }) => (
+                <FormItem>
+                  <p className="font-medium text-sm">
+                  Hourly Rate in BDT<span className="text-red-500">*</span>
+                  </p>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      value={field.value}
+                      placeholder="Ex: 200"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
         <FormField
           control={form.control}
           name="email"

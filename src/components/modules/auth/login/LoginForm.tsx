@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "./loginFormValidation";
-import { loginUser } from "@/service/AuthService";
+import { loginUser } from "@/services/AuthService";
 import { toast, Toaster } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/context/UserContext";

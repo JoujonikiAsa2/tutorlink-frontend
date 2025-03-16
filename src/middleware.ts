@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "./service/AuthService";
+import { getCurrentUser } from "./services/AuthService";
 const authRoutes = ["/login", "/register"];
 
 type Role = keyof typeof roleBasedPrivateRoutes;

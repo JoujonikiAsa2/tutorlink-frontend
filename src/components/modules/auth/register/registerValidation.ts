@@ -25,6 +25,11 @@ export const tutorSchema = z.object({
     .transform((val) => Number(val))
     .refine((val) => val > 0, { message: "Age must be a positive number" }),
   gender: z.enum(["male", "female", "other"], { message: "Gender required" }),
+  
+  hourlyRate: z
+  .string()
+  .transform((val) => Number(val))
+  .refine((val) => val > 0, { message: "Hourly Rate must be a positive number" }),
   password: z
     .string({ message: "Password required" })
     .min(6, "Minimum 6 character is required"),
@@ -46,12 +51,11 @@ export const tutorSchema = z.object({
   subjects: z.array(z.string()).min(1, "At least one subject is required"),
   preferedLocation: z.string().min(1, "At least one preferred location is required"),
   availability: z.enum(["available", "unavailable"]).default("available"),
-  hourlyRate: z.number().min(0).optional(),
 });
 
 export const studentSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-
+  profileImage: z.string().optional(),
   age: z
     .string()
     .transform((val) => Number(val))

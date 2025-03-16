@@ -1,5 +1,5 @@
 "use client";
-import { getCurrentUser } from "@/service/AuthService";
+import { getCurrentUser } from "@/services/AuthService";
 import { TUser } from "@/types";
 import React, {
   createContext,
