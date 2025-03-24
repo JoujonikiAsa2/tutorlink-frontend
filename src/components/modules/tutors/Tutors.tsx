@@ -10,28 +10,27 @@ import TutorFilter from "./TutorFilter";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TSubject } from "@/types/subject";
+import { useGetAllTutorsQuery } from "@/redux/features/tutor/tutorApi";
 
 const AllTutors = ({
-  tutors,
   subjects,
 }: {
-  tutors: TTutor[];
   subjects: TSubject[];
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const route = useRouter();
-  const searchParams = { searchTerm: searchTerm};
+  const searchParams = { searchTerm: searchTerm };
   const query = new URLSearchParams(searchParams);
-
+  const { data: tutors, isLoading } = useGetAllTutorsQuery(undefined);
   const applySearch = () => {
     console.log(query);
     route.push(`/tutors?${query}`);
   };
 
-  const handleOnChange = async(e: any) => {
+  const handleOnChange = async (e: any) => {
     const sort = {
-      sort: e.target.value as string
-    }
+      sort: e.target.value as string,
+    };
     const sortQuery = await new URLSearchParams(sort);
     console.log(e.target.value);
     route.push(`/tutors?${sortQuery}`);
@@ -97,7 +96,7 @@ const AllTutors = ({
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4" />
                   <span className="text-sm font-medium">
-                    {tutors?.length} tutors found
+                    {(tutors?.data ?? []).length} tutors found
                   </span>
 
                   <Button
@@ -124,31 +123,39 @@ const AllTutors = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm">Sort by:</span>
-                  <select onChange={handleOnChange} className="border rounded-sm p-1">
+                  <select
+                    onChange={handleOnChange}
+                    className="border rounded-sm p-1"
+                  >
                     <option value="relevance">Relevance</option>
                     <option value="-rating">Rating (High to low)</option>
-                    <option value="hourlyRate">Hourly Rate (Low to High)</option>
-                    <option value="-hourlyRate">Hourly Rate (High to Low)</option>
+                    <option value="hourlyRate">
+                      Hourly Rate (Low to High)
+                    </option>
+                    <option value="-hourlyRate">
+                      Hourly Rate (High to Low)
+                    </option>
                     <option value="-createdAt">Newest Profiles</option>
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 min-h-[500px]">
-                {tutors?.length > 0 ? (
-                  tutors?.map((tutor: TTutor) => (
+                {isLoading ? (
+                  <div className="col-span-full flex justify-center items-center ">
+                    <div className="relative h-10 w-10 mb-6">
+                    <div className="absolute top-0 left-0 w-full h-full border-4 border-purple-200 rounded-full"></div>
+                    <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-blue-600 border-r-purple-600 rounded-full animate-spin"></div>
+                  </div>
+                  </div>
+                ) : (
+                  tutors?.data?.map((tutor: TTutor) => (
                     <TutorCard key={tutor?._id} tutor={tutor} />
                   ))
-                ) : (
-                  <div className=" col-span-3  w-full h-full flex justify-center items-center">
-                    <p className="text-muted-foreground text-center">
-                      No tutors found
-                    </p>
-                  </div>
                 )}
               </div>
 
-              {tutors?.length > 0 && (
+              {(tutors?.data ?? []).length > 0 && (
                 <div className="flex justify-center pt-6">
                   <div className="flex items-center space-x-2">
                     <Button variant="outline" size="icon" disabled>

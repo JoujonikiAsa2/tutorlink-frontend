@@ -1,6 +1,6 @@
 import Tutors from "@/components/modules/tutors/Tutors";
-import { getAllSubjects } from "@/services/subject";
-import { getAllTutors } from "@/services/tutor";
+import { getAllSubjects } from "@/services/SubjectService";
+import { getAllTutors } from "@/services/TutorService";
 
 interface TutorPageProps {
   searchParams: Record<string, string | undefined>;

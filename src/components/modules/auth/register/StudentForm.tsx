@@ -23,15 +23,14 @@ import {
 } from "@/components/ui/select";
 import { classesArray, subjectsArray } from "@/lib/tutors";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { studentSchema } from "./registerValidation";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/context/UserContext";
+import { useRegisterUserMutation } from "@/redux/features/auth/authApi";
 
 const StudentForm = () => {
-  const {setIsLoading} = useUser()
+  const [registerUser] = useRegisterUserMutation()
   const router = useRouter()
   const form = useForm({
     resolver: zodResolver(studentSchema),
@@ -46,14 +45,9 @@ const StudentForm = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     try {
-      const res = await registerUser(data, "student");
-      setIsLoading(true);
-      if (res?.success) {
-        toast.success(res?.message);
+      const res = await registerUser(data);
+        toast.success(res?.data?.message);
         router.push("/login");
-      } else {
-        toast.error(res?.message);
-      }
     } catch (error: any) {
       toast.error(error);
     }

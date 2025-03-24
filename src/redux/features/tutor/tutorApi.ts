@@ -1,12 +1,11 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { TQueryParam, TResponseRedux } from "@/types/global";
+import {  TQueryParam, TResponseRedux } from "@/types/global";
 import { TTutor } from "@/types/tutor";
 
 const tutorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllTutors: builder.query({
       query: (args) => {
-        console.log(args);
         const params = new URLSearchParams();
         if (args) {
           args.forEach((item: TQueryParam) => {
@@ -15,24 +14,22 @@ const tutorApi = baseApi.injectEndpoints({
         }
         return {
           url: `/tutors`,
-          methods: "GET",
-          params: params,
+          method: "GET",
+          params,
         };
       },
-      transformResponse: (response: TResponseRedux<TTutor[] | undefined>) => {
-        return {
-          data: response.data,
-          meta: response.meta,
-        };
-      },
+      transformResponse: (response: TResponseRedux<TTutor[] | undefined>) => ({
+        data: response?.data ?? [], // ✅ Default to empty array
+        meta: response?.meta ?? { totalDoc: 0, limit: 10, page: 1 }, // ✅ Default meta
+      }),
+      providesTags: [{ type: "Tutors", id: "LIST" }],
     }),
     getTutorDetails: builder.query({
-      query: (tutorId: string) => {
-        return {
-          url: `/tutors/${tutorId}`,
-          methods: "GET",
-        };
-      },
+      query: (tutorId: string) => ({
+        url: `/tutors/${tutorId}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "Tutors", id }], // ✅ Assign specific ID
     }),
   }),
 });

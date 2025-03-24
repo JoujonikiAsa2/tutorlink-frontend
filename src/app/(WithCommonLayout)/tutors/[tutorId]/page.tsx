@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TutorDetails from "@/components/modules/tutors/TutorDetails";
-import { getTutorById } from "@/services/tutor";
+import { getTutorById } from "@/services/TutorService";
 
 const TutorProfilePage = async ({ params }: any) => {
   const tutorParams = await params;

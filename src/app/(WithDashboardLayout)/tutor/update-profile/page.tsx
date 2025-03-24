@@ -8,4 +8,4 @@ const UpdateTutorProfileInfo = () => {
     );
 };
 
-export default UpdateTutorProfileInfo;
+export default UpdateTutorProfileInfo; 

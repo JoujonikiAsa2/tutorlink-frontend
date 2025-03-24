@@ -14,14 +14,18 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "./loginFormValidation";
-import { loginUser } from "@/services/AuthService";
 import { toast, Toaster } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useUser } from "@/context/UserContext";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { jwtDecode } from "jwt-decode";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { setCookies } from "@/services/AuthService";
 
 const LoginForm = () => {
-  const { setIsLoading} =  useUser()
-  const searchParams = useSearchParams(); 
+  const searchParams = useSearchParams();
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
   const redirect = searchParams.get("redirectPath");
   const router = useRouter();
   const form = useForm({
@@ -29,23 +33,32 @@ const LoginForm = () => {
   });
 
   const {
-    formState: {isSubmitting}
-  } = form
+    formState: { isSubmitting },
+  } = form;
 
-  const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     try {
-      const res = await loginUser(data);
-      setIsLoading(true);
-      if (res?.success) {
-        toast.success(res?.message);
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
+      const res = await login(data).unwrap();
+      console.log(res);
+      console.log(res?.message);
+      toast.success(res?.message);
+      const authUser = jwtDecode(res?.data?.accessToken) as Record<
+        string,
+        unknown
+      >;
+      await setCookies(res?.data?.accessToken);
+      console.log(authUser);
+      const authState = {
+        token: res?.data?.accessToken as string,
+        user: authUser,
+      };
+      console.log(authState);
+      dispatch(setUser(authState));
+      if (redirect) {
+        router.push(redirect);
       } else {
-        toast.error(res?.message);
+        router.push("/");
       }
     } catch (err: any) {
       console.error(err);
@@ -108,7 +121,7 @@ const LoginForm = () => {
           </Link>
         </div>
       </Form>
-      <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
     </Card>
   );
 };
