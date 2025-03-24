@@ -6,35 +6,45 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Search, Filter } from "lucide-react";
 import { TTutor } from "@/types/tutor";
 import TutorCard from "./TutorCard";
-import TutorFilter from "./TutorFilter";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { TSubject } from "@/types/subject";
 import { useGetAllTutorsQuery } from "@/redux/features/tutor/tutorApi";
-
-const AllTutors = ({
-  subjects,
-}: {
-  subjects: TSubject[];
-}) => {
+import { useGetAllSubjectsQuery } from "@/redux/features/subjects/subjectsApi";
+import { useRouter } from "next/navigation";
+import { RiStarFill, RiStarHalfFill } from "react-icons/ri";
+import { TiStarOutline } from "react-icons/ti";
+import { TSubject } from "@/types/subject";
+const AllTutors = () => {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const route = useRouter();
-  const searchParams = { searchTerm: searchTerm };
-  const query = new URLSearchParams(searchParams);
-  const { data: tutors, isLoading } = useGetAllTutorsQuery(undefined);
+  const [params, setParams] = useState<Record<string, unknown>[]>([
+    { name: "searchTerm", value: "" },
+  ]);
+  // const [filters, setFilters] = useState<{ name: string; value: any }[]>([]);
+
+  const { data: tutors, isLoading, isError } = useGetAllTutorsQuery(params);
+  const { data: subjects } = useGetAllSubjectsQuery(undefined);
   const applySearch = () => {
-    console.log(query);
-    route.push(`/tutors?${query}`);
+    setParams(
+      params.map((p) =>
+        p.name === "searchTerm" ? { ...p, value: searchTerm } : p
+      )
+    );
   };
 
   const handleOnChange = async (e: any) => {
     const sort = {
-      sort: e.target.value as string,
+      name: "sort",
+      value: e.target.value,
     };
-    const sortQuery = await new URLSearchParams(sort);
-    console.log(e.target.value);
-    route.push(`/tutors?${sortQuery}`);
+    setParams(() => [{ name: "searchTerm", value: "" }, sort]);
   };
+  const handleChange = (e: any) => {
+    console.log("i am here");
+    const { name, value } = e.target;
+    setParams((item) => [...item, { name: name, value: value }]);
+  };
+
+  console.log(isError);
   return (
     <div>
       {/* banner section*/}
@@ -78,16 +88,165 @@ const AllTutors = ({
                   size="sm"
                   className="h-8 px-2 text-xs"
                   onClick={() => {
-                    new URLSearchParams(searchParams);
-                    console.log("clicked");
-                    route.push(`/tutors`);
+                    setParams([{}]);
                   }}
                 >
                   Clear all
                 </Button>
               </div>
               {/* subject filtering */}
-              <TutorFilter subjects={subjects} />
+              <form className="flex flex-col gap-2 rounded-lg p-4 mt-10 lg:mt-0 lg:bg-primary/5">
+                <div>
+                  <h1 className="mb-2 text-base text-primary font-semibold">
+                    Hourly Rate
+                  </h1>
+                  <div className="w-full flex gap-2">
+                    <input
+                      type="number"
+                      name="minHourlyRate"
+                      onChange={handleChange}
+                      placeholder="Min Hourly Rate"
+                      className="w-1/2 p-2 border rounded-md"
+                    />
+                    <input
+                      type="number"
+                      name="maxHourlyRate"
+                      onChange={handleChange}
+                      placeholder="Max Hourly Rate"
+                      className="w-1/2 p-2 border rounded-md"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h1 className="mb-2 text-base text-primary font-semibold">
+                    Subjects
+                  </h1>
+                  <select
+                    name="subject"
+                    className="w-full p-2 border rounded-md"
+                    onChange={handleChange}
+                  >
+                    <option value="">Select subjects</option>
+                    {subjects?.data?.map((subject: TSubject) => (
+                      <option key={subject.name} value={subject.name}>
+                        {subject.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="w-full">
+                  <h1 className="mb-2 text-base text-primary font-semibold">
+                    Rating
+                  </h1>
+                  <div className="flex gap-2 items-center">
+                    <label className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={4.5}
+                        onChange={handleChange}
+                        className="border rounded-md "
+                      />{" "}
+                      &nbsp;
+                      <div className="flex">
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarHalfFill color="orange" />
+                      </div>{" "}
+                    </label>
+                    <p className="text-sm text-muted-foreground">(4.5 & up)</p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={4}
+                        onChange={handleChange}
+                        className="border rounded-md "
+                      />{" "}
+                      &nbsp;
+                      <div className="flex">
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <TiStarOutline color="orange" />
+                      </div>{" "}
+                    </label>
+                    <p className="text-sm text-muted-foreground">(4 & up)</p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={3.5}
+                        onChange={handleChange}
+                        className="border rounded-md "
+                      />{" "}
+                      &nbsp;
+                      <div className="flex">
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarHalfFill color="orange" />
+                        <TiStarOutline color="orange" />
+                      </div>{" "}
+                    </label>
+                    <p className="text-sm text-muted-foreground">(3.5 & up)</p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={3}
+                        onChange={handleChange}
+                        className="border rounded-md "
+                      />{" "}
+                      &nbsp;
+                      <div className="flex">
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <RiStarFill color="orange" />
+                        <TiStarOutline color="orange" />
+                        <TiStarOutline color="orange" />
+                      </div>{" "}
+                    </label>
+                    <p className="text-sm text-muted-foreground">(3 & up)</p>
+                  </div>
+                </div>
+                <div className="w-full">
+                  <h1 className="mb-2 text-base text-primary font-semibold">
+                    Availability
+                  </h1>
+                  <label className="flex gap-2 items-center">
+                    <input
+                      type="radio"
+                      name="availability"
+                      value="available"
+                      onChange={handleChange}
+                      className="border rounded-md "
+                    />{" "}
+                    &nbsp; Available
+                  </label>
+                </div>
+                <div className="w-full">
+                  <h1 className="mb-2 text-base text-primary font-semibold">
+                    Prefered Location
+                  </h1>
+                  <input
+                    type="text"
+                    name="preferedLocation"
+                    onChange={handleChange}
+                    placeholder="Prefered Location"
+                    className="w-full border rounded-md p-2"
+                  />
+                </div>
+              </form>
             </div>
 
             {/* Tutors Grid */}
@@ -104,8 +263,7 @@ const AllTutors = ({
                     size="sm"
                     className="h-8 px-2 text-xs"
                     onClick={() => {
-                      console.log("clicked");
-                      route.push(`/tutors`);
+                      router.push(`/tutors`);
                     }}
                   >
                     Show All
@@ -116,7 +274,166 @@ const AllTutors = ({
                         <Button variant="outline">Filter</Button>
                       </SheetTrigger>
                       <SheetContent side="left">
-                        <TutorFilter subjects={subjects} />
+                        <form className="flex flex-col gap-2 rounded-lg p-4 mt-10 lg:mt-0 lg:bg-primary/5">
+                          <div>
+                            <h1 className="mb-2 text-base text-primary font-semibold">
+                              Hourly Rate
+                            </h1>
+                            <div className="w-full flex gap-2">
+                              <input
+                                type="number"
+                                name="minHourlyRate"
+                                onChange={handleChange}
+                                placeholder="Min Hourly Rate"
+                                className="w-1/2 p-2 border rounded-md"
+                              />
+                              <input
+                                type="number"
+                                name="maxHourlyRate"
+                                onChange={handleChange}
+                                placeholder="Max Hourly Rate"
+                                className="w-1/2 p-2 border rounded-md"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <h1 className="mb-2 text-base text-primary font-semibold">
+                              Subjects
+                            </h1>
+                            <select
+                              name="subject"
+                              className="w-full p-2 border rounded-md"
+                              onChange={handleChange}
+                            >
+                              <option value="">Select subjects</option>
+                              {subjects?.data?.map((subject: TSubject) => (
+                                <option key={subject.name} value={subject.name}>
+                                  {subject.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="w-full">
+                            <h1 className="mb-2 text-base text-primary font-semibold">
+                              Rating
+                            </h1>
+                            <div className="flex gap-2 items-center">
+                              <label className="flex gap-2 items-center">
+                                <input
+                                  type="radio"
+                                  name="rating"
+                                  value={4.5}
+                                  onChange={handleChange}
+                                  className="border rounded-md "
+                                />{" "}
+                                &nbsp;
+                                <div className="flex">
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarHalfFill color="orange" />
+                                </div>{" "}
+                              </label>
+                              <p className="text-sm text-muted-foreground">
+                                (4.5 & up)
+                              </p>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                              <label className="flex gap-2 items-center">
+                                <input
+                                  type="radio"
+                                  name="rating"
+                                  value={4}
+                                  onChange={handleChange}
+                                  className="border rounded-md "
+                                />{" "}
+                                &nbsp;
+                                <div className="flex">
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <TiStarOutline color="orange" />
+                                </div>{" "}
+                              </label>
+                              <p className="text-sm text-muted-foreground">
+                                (4 & up)
+                              </p>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                              <label className="flex gap-2 items-center">
+                                <input
+                                  type="radio"
+                                  name="rating"
+                                  value={3.5}
+                                  onChange={handleChange}
+                                  className="border rounded-md "
+                                />{" "}
+                                &nbsp;
+                                <div className="flex">
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarHalfFill color="orange" />
+                                  <TiStarOutline color="orange" />
+                                </div>{" "}
+                              </label>
+                              <p className="text-sm text-muted-foreground">
+                                (3.5 & up)
+                              </p>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                              <label className="flex gap-2 items-center">
+                                <input
+                                  type="radio"
+                                  name="rating"
+                                  value={3}
+                                  onChange={handleChange}
+                                  className="border rounded-md "
+                                />{" "}
+                                &nbsp;
+                                <div className="flex">
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <RiStarFill color="orange" />
+                                  <TiStarOutline color="orange" />
+                                  <TiStarOutline color="orange" />
+                                </div>{" "}
+                              </label>
+                              <p className="text-sm text-muted-foreground">
+                                (3 & up)
+                              </p>
+                            </div>
+                          </div>
+                          <div className="w-full">
+                            <h1 className="mb-2 text-base text-primary font-semibold">
+                              Availability
+                            </h1>
+                            <label className="flex gap-2 items-center">
+                              <input
+                                type="radio"
+                                name="availability"
+                                value="available"
+                                onChange={handleChange}
+                                className="border rounded-md "
+                              />{" "}
+                              &nbsp; Available
+                            </label>
+                          </div>
+                          <div className="w-full">
+                            <h1 className="mb-2 text-base text-primary font-semibold">
+                              Prefered Location
+                            </h1>
+                            <input
+                              type="text"
+                              name="preferedLocation"
+                              onChange={handleChange}
+                              placeholder="Prefered Location"
+                              className="w-full border rounded-md p-2"
+                            />
+                          </div>
+                        </form>
                       </SheetContent>
                     </Sheet>
                   </div>
@@ -144,14 +461,18 @@ const AllTutors = ({
                 {isLoading ? (
                   <div className="col-span-full flex justify-center items-center ">
                     <div className="relative h-10 w-10 mb-6">
-                    <div className="absolute top-0 left-0 w-full h-full border-4 border-purple-200 rounded-full"></div>
-                    <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-blue-600 border-r-purple-600 rounded-full animate-spin"></div>
+                      <div className="absolute top-0 left-0 w-full h-full border-4 border-purple-200 rounded-full"></div>
+                      <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-blue-600 border-r-purple-600 rounded-full animate-spin"></div>
+                    </div>
                   </div>
-                  </div>
-                ) : (
+                ) : isError === false ? (
                   tutors?.data?.map((tutor: TTutor) => (
                     <TutorCard key={tutor?._id} tutor={tutor} />
                   ))
+                ) : (
+                  <div className="col-span-full flex justify-center items-center ">
+                    <h2>No filtered data available</h2>
+                  </div>
                 )}
               </div>
 

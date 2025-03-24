@@ -1,33 +1,9 @@
 import Tutors from "@/components/modules/tutors/Tutors";
-import { getAllSubjects } from "@/services/SubjectService";
-import { getAllTutors } from "@/services/TutorService";
-
-interface TutorPageProps {
-  searchParams: Record<string, string | undefined>;
-}
-
-
-const TutorPage = async({ searchParams }: TutorPageProps) => {
-  const filters = {
-    searchTerm: searchParams.searchTerm || "",
-    availability: searchParams.availability || "",
-    minHourlyRate: searchParams.minHourlyRate || "",
-    maxHourlyRate: searchParams.maxHourlyRate || "",
-    preferedLocation: searchParams.preferedLocation || "",
-    subject: searchParams.subject || "",
-    rating: searchParams.rating || "",
-    sort: searchParams.sort || "",
-    page: searchParams.page ? Number(searchParams.page) : 1,
-    limit: searchParams.limit ? Number(searchParams.limit) : 10,
-  };
-
-  const tutors = await getAllTutors(filters);
-  const subjects = await getAllSubjects()
-  console.log("subjects",subjects)
+const TutorPage = async() => {
 
   return (
     <div>
-      <Tutors tutors={tutors?.data} subjects={subjects?.data}/>
+      <Tutors/>
     </div>
   );
 };
